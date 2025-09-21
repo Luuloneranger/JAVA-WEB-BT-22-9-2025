@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout.html}">
+<head>
+    <title>Dashboard</title>
+</head>
+<body>
+<main layout:fragment="content">
+    <div class="container mt-4">
+        <h2>Welcome, <span th:text="${session.user.username}"></span>!</h2>
+        <p>Your role: <b th:text="${session.user.role}"></b></p>
+
+        <div th:if="${session.user.role == 'ADMIN'}">
+            <h4>Admin Panel</h4>
+            <ul>
+                <li><a th:href="@{/admin/categories}">Manage Categories</a></li>
+                <li><a th:href="@{/admin/accounts}">Manage Users</a></li>
+                <li><a th:href= "@{/admin/videos}" >Manage Videos</a>
+            </ul>
+        </div>
+
+        <div th:if="${session.user.role == 'USER'}">
+            <h4>User Menu</h4>
+            <ul>
+                <li><a th:href="@{/user/categories}">View Categories</a></li>
+                <li><a th:href="@{/user/videos}">View Videos</a></li>
+            </ul>
+        </div>
+        
+        <a th:if="${session.user != null}" th:href="@{/logout}" class="btn btn-danger btn-sm">  Logout</a>
+    </div>
+</main>
+</body>
+</html>

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout.html}">
+<head>
+    <title>User Management</title>
+</head>
+<body>
+<main layout:fragment="content">
+    <div class="container mt-4">
+        <h2>User Management</h2>
+        <a th:href="@{/admin/accounts/add}" class="btn btn-success mb-3">➕ Add User</a>
+
+        <table class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Username</th>
+                    <th>Role</th>
+                    <th>Enabled</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="user : ${users}">
+                    <td th:text="${user.id}"></td>
+                    <td th:text="${user.username}"></td>
+                    <td th:text="${user.role}"></td>
+                    <td>
+                        <span th:text="${user.enabled ? 'Active' : 'Disabled'}"></span>
+                    </td>
+                    <td>
+                        <a th:href="@{/admin/accounts/edit/{id}(id=${user.id})}" class="btn btn-primary btn-sm">✏ Edit</a>
+                        <a th:href="@{/admin/accounts/delete/{id}(id=${user.id})}"
+                           onclick="return confirm('Delete this user?')"
+                           class="btn btn-danger btn-sm">🗑 Delete</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</main>
+</body>
+</html>

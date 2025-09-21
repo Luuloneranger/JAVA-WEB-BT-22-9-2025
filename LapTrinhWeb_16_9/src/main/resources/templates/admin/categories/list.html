@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout.html}">
+
+<head>
+	<title>Category List</title>
+	<link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+</head>
+
+<body>
+	<main layout:fragment="content">
+		<div class="container mt-4">
+			<div class="card shadow">
+				<div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+					<h5 class="mb-0">📂 Category List</h5>
+					<a th:href="@{/admin/categories/add}" class="btn btn-light btn-sm">
+						<i class="fa fa-plus"></i> Add New
+					</a>
+				</div>
+
+				<div class="card-body">
+					<!-- Search -->
+					<form th:action="@{/admin/categories/searchpaginated}" method="get"
+						class="mb-3 d-flex justify-content-end">
+						<input type="text" name="name" th:value="${name}" placeholder="🔎 Search by name"
+							class="form-control w-25 me-2" />
+						<button type="submit" class="btn btn-outline-primary">Search</button>
+					</form>
+
+					<!-- Table -->
+					<table class="table table-bordered table-hover align-middle text-center">
+						<thead class="table-dark">
+							<tr>
+								<th>ID</th>
+								<th>Name</th>
+								<th>Image</th>
+								<th style="width: 150px;">Action</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr th:each="c : ${categoryPage.content}">
+								<td th:text="${c.id}"></td>
+								<td th:text="${c.categoryName}"></td>
+								<td>
+									<img th:if="${c.images}" th:src="@{'/uploads/' + ${c.images}}" alt="Image"
+										width="80" class="img-thumbnail">
+									<span th:if="${c.images == null}">No Image</span>
+								</td>
+								<td>
+									<a th:href="@{|/admin/categories/edit/${c.id}|}"
+										class="btn btn-warning btn-sm me-2">
+										<i class="fa fa-edit"></i>
+									</a>
+									<a th:href="@{|/admin/categories/delete/${c.id}|}" class="btn btn-danger btn-sm"
+										onclick="return confirm('Are you sure you want to delete this category?')">
+										<i class="fa fa-trash"></i>
+									</a>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+
+					<!-- Pagination -->
+					<nav th:if="${totalPages > 1}">
+						<ul class="pagination justify-content-center">
+							<!-- Prev -->
+							<li class="page-item" th:classappend="${currentPage == 0} ? 'disabled'">
+								<a class="page-link"
+									th:href="@{/admin/categories/searchpaginated(page=${currentPage - 1}, name=${name})}">
+									« Previous
+								</a>
+							</li>
+
+							<!-- Page Numbers -->
+							<li class="page-item" th:each="i : ${#numbers.sequence(0, totalPages-1)}"
+								th:classappend="${i == currentPage} ? 'active'">
+								<a class="page-link"
+									th:href="@{/admin/categories/searchpaginated(page=${i}, name=${name})}"
+									th:text="${i + 1}">1</a>
+							</li>
+
+							<!-- Next -->
+							<li class="page-item" th:classappend="${currentPage == totalPages - 1} ? 'disabled'">
+								<a class="page-link"
+									th:href="@{/admin/categories/searchpaginated(page=${currentPage + 1}, name=${name})}">
+									Next »
+								</a>
+							</li>
+						</ul>
+					</nav>
+				</div>
+			</div>
+		</div>
+	</main>
+</body>
+
+</html>

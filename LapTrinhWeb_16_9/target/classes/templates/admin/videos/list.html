@@ -1,0 +1,43 @@
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout.html}">
+<head>
+    <title>Video Management</title>
+</head>
+<body>
+<main layout:fragment="content">
+    <div class="container mt-4">
+        <h2>Video Management</h2>
+        <a th:href="@{/admin/videos/add}" class="btn btn-success mb-3">➕ Add Video</a>
+
+        <table class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Title</th>
+                    <th>URL</th>
+                    <th>Description</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="video : ${videos}">
+                    <td th:text="${video.id}"></td>
+                    <td th:text="${video.title}"></td>
+                    <td><a th:href="${video.url}" target="_blank">Link</a></td>
+                    <td th:text="${video.description}"></td>
+                    <td>
+                        <a th:href="@{/admin/videos/edit/{id}(id=${video.id})}" class="btn btn-primary btn-sm">✏ Edit</a>
+                        <a th:href="@{/admin/videos/delete/{id}(id=${video.id})}"
+                           onclick="return confirm('Delete this video?')"
+                           class="btn btn-danger btn-sm">🗑 Delete</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</main>
+</body>
+</html>
